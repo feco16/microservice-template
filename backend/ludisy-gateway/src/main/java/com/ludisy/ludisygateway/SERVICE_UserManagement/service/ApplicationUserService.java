@@ -1,8 +1,9 @@
-package com.ludisy.ludisygateway.SERVICE_UserManagement.security;
+package com.ludisy.ludisygateway.SERVICE_UserManagement.service;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.dto.JwtRequest;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.dto.JwtResponse;
-import com.ludisy.ludisygateway.SERVICE_UserManagement.service.JwtUserDetailsService;
+import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
+import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyJwtAuthenticateService {
+public class ApplicationUserService {
 
     @Autowired
     private AuthenticationManager authenticationManager;

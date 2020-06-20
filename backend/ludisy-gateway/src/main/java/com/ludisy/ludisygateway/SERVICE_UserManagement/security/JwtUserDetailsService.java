@@ -1,4 +1,4 @@
-package com.ludisy.ludisygateway.SERVICE_UserManagement.service;
+package com.ludisy.ludisygateway.SERVICE_UserManagement.security;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
@@ -17,6 +17,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private ApplicationUserRepository applicationUserRepository;
 
+    @Override
     public UserDetails loadUserByUsername (String username) {
         ApplicationUser applicationUser = applicationUserRepository.findByUsername(username);
         if (applicationUser == null) {
