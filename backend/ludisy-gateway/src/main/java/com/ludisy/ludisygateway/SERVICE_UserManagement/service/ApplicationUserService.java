@@ -23,7 +23,6 @@ public class ApplicationUserService {
     @Autowired
     private JwtUserDetailsService userDetailsService;
 
-
     public ResponseEntity<?> authenticate(JwtRequest authenticationRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(

@@ -1,18 +1,11 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.repository;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
-import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Service
-public class ApplicationUserRepository {
+@Repository
+public interface ApplicationUserRepository extends JpaRepository<ApplicationUser, Long> {
 
-    // Bcrypt-ed password for password1
-    ApplicationUser applicationUser = new ApplicationUser("user1", "$2a$10$ZDSiYI3YKPsqXAsF3PA5zu.2hdr3e5umjBzK2JAkyb2XelKH4Hgpq");
-
-    public ApplicationUser findByUsername(String username) {
-        if (username.equals(applicationUser.getUsername())) {
-            return applicationUser;
-        }
-        return null;
-    }
+    ApplicationUser findByUsername(String username);
 }
