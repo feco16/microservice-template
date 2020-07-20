@@ -1,5 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.security;
 
+import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

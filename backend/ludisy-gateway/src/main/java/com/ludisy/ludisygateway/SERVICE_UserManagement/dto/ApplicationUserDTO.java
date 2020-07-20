@@ -1,13 +1,7 @@
-package com.ludisy.ludisygateway.SERVICE_UserManagement.model;
+package com.ludisy.ludisygateway.SERVICE_UserManagement.dto;
 
-import javax.persistence.*;
+public class ApplicationUserDTO {
 
-@Entity
-@Table(name = "APPLICATION_USER")
-public class ApplicationUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String userId;
     private String email;
     private String name;
@@ -15,19 +9,6 @@ public class ApplicationUser {
     private String locale;
     private String familyName;
     private String givenName;
-
-    public ApplicationUser() {
-    }
-
-    public ApplicationUser(String userId, String email, String name, String pictureUrl, String locale, String familyName, String givenName) {
-        this.userId = userId;
-        this.email = email;
-        this.name = name;
-        this.pictureUrl = pictureUrl;
-        this.locale = locale;
-        this.familyName = familyName;
-        this.givenName = givenName;
-    }
 
     public String getUserId() {
         return userId;
@@ -85,3 +66,4 @@ public class ApplicationUser {
         this.givenName = givenName;
     }
 }
+
