@@ -8,80 +8,43 @@ public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String userId;
-    private String email;
-    private String name;
-    private String pictureUrl;
-    private String locale;
-    private String familyName;
-    private String givenName;
+    private long id;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
 
     public ApplicationUser() {
     }
 
-    public ApplicationUser(String userId, String email, String name, String pictureUrl, String locale, String familyName, String givenName) {
-        this.userId = userId;
-        this.email = email;
-        this.name = name;
-        this.pictureUrl = pictureUrl;
-        this.locale = locale;
-        this.familyName = familyName;
-        this.givenName = givenName;
+    public String getUsername() {
+        return username;
     }
 
-    public String getUserId() {
-        return userId;
+    public ApplicationUser(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public long getId() {
+        return id;
     }
 
-    public String getEmail() {
-        return email;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getPassword() {
+        return password;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
-
-    public String getFamilyName() {
-        return familyName;
-    }
-
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName;
-    }
-
-    public String getGivenName() {
-        return givenName;
-    }
-
-    public void setGivenName(String givenName) {
-        this.givenName = givenName;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
