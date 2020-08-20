@@ -1,8 +1,10 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service;
 
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.Biking;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutInstance;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +18,12 @@ public class WorkoutService {
     @Autowired
     private WorkoutRepository workoutRepository;
 
-    public List<WorkoutDTO> getWorkoutDTOList (String userId){
-        Biking biking = new Biking();
-        biking.setDistance(16);
+    @Autowired
+    private WorkoutDTOConverter workoutDTOConverter;
 
-        WorkoutDTO workoutDTO = new WorkoutDTO();
-        workoutDTO.setId("1");
-        workoutDTO.setType(1);
-        workoutDTO.setData(biking);
+    public List<WorkoutDTO> getWorkoutDTOList (String userId){
+        Workout workout = workoutRepository.findByUuid(userId);
+        WorkoutDTO workoutDTO = workoutDTOConverter.convert(workout);
 
         List<WorkoutDTO> workoutDTOList = new ArrayList<>();
         workoutDTOList.add(workoutDTO);

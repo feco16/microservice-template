@@ -1,5 +1,8 @@
 package com.ludisy.ludisygateway.rest;
 
+import com.ludisy.ludisygateway.SERVICE_UserManagement.dto.ApplicationUserDTO;
+import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
+import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +20,15 @@ import java.util.List;
 public class GatewayController {
 
     @Autowired
-    WorkoutService workoutService;
+    ApplicationUserService applicationUserService;
 
     @GetMapping("/welcome")
     public String welcome() {
         return "Welcome at Ludisy!";
     }
 
-    @GetMapping("/workout/{userId}")
-    public List<WorkoutDTO> getWorkoutsByUserId(@PathVariable(value = "userId") String userId){
-        return workoutService.getWorkoutDTOList(userId);
+    @GetMapping("/user/{userId}")
+    public ApplicationUserDTO getUserById(@PathVariable(value = "userId") long userId){
+        return applicationUserService.getById(userId);
     }
 }
