@@ -1,9 +1,9 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.model;
 
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
-import org.hibernate.jdbc.Work;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -12,6 +12,7 @@ public class ApplicationUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "APPLICATION_USER_ID")
     private long applicationUserId;
 
     @Column(name = "USER_ID")
@@ -23,8 +24,8 @@ public class ApplicationUser {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "applicationUser")
-    private List<Workout> workouts;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "applicationUser", fetch = FetchType.LAZY)
+    private List<Workout> workouts = new ArrayList<>();
 
     public ApplicationUser() {
     }
@@ -72,5 +73,17 @@ public class ApplicationUser {
 
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
+    }
+
+
+
+    public void addWorkout(Workout workout) {
+        workouts.add(workout);
+        workout.setApplicationUser(this);
+    }
+
+    public void removeWorkout(Workout workout) {
+        workouts.remove(workout);
+        workout.setApplicationUser(null);
     }
 }

@@ -14,10 +14,10 @@ public class ApplicationUserDTOConverter implements Converter<ApplicationUser, A
     @Override
     public ApplicationUserDTO convert(ApplicationUser source) {
         ApplicationUserDTO applicationUserDTO = new ApplicationUserDTO();
-        applicationUserDTO.setUserId(applicationUserDTO.getUserId());
-        applicationUserDTO.setUsername(applicationUserDTO.getUsername());
-        applicationUserDTO.setPassword(applicationUserDTO.getPassword());
-        applicationUserDTO.setWorkouts(applicationUserDTO.getWorkouts());
+        applicationUserDTO.setUserId(source.getUserId());
+        applicationUserDTO.setUsername(source.getUsername());
+        applicationUserDTO.setPassword(source.getPassword());
+        applicationUserDTO.setWorkouts(source.getWorkouts());
 
         return applicationUserDTO;
     }

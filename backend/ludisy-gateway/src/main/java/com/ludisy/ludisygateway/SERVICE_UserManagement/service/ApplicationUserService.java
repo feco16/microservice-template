@@ -51,10 +51,14 @@ public class ApplicationUserService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    public ApplicationUserDTO getById(long userId) {
+    public ApplicationUser getById(long userId) {
         ApplicationUser applicationUser = applicationUserRepository.findById(userId).get();
-        ApplicationUserDTO applicationUserDTO = applicationUserDTOConverter.convert(applicationUser);
+        return applicationUser;
+    }
 
-        return  applicationUserDTO;
+    public ApplicationUserDTO getDTOById(long userId) {
+        ApplicationUserDTO applicationUserDTO = applicationUserDTOConverter.convert(getById(userId));
+
+        return applicationUserDTO;
     }
 }
