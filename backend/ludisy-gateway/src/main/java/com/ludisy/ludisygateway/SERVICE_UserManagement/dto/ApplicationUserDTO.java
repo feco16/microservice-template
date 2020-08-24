@@ -1,5 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.dto;
 
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public class ApplicationUserDTO {
     private String userId;
     private String username;
     private String password;
-    private List<Workout> workouts;
+    private List<WorkoutDTO> workouts;
 
     public String getUserId() {
         return userId;
@@ -35,11 +36,11 @@ public class ApplicationUserDTO {
         this.password = password;
     }
 
-    public List<Workout> getWorkouts() {
+    public List<WorkoutDTO> getWorkouts() {
         return workouts;
     }
 
-    public void setWorkouts(List<Workout> workouts) {
+    public void setWorkouts(List<WorkoutDTO> workouts) {
         this.workouts = workouts;
     }
 }

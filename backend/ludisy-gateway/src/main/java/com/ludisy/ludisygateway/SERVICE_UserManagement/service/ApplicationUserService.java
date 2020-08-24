@@ -8,6 +8,8 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ApplicationUserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ApplicationUserService.class);
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -51,12 +55,13 @@ public class ApplicationUserService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    public ApplicationUser getById(long userId) {
-        ApplicationUser applicationUser = applicationUserRepository.findById(userId).get();
+    public ApplicationUser getById(String userId) {
+        logger.info("Get application user with id {}", userId);
+        ApplicationUser applicationUser = applicationUserRepository.findByUserId(userId);
         return applicationUser;
     }
 
-    public ApplicationUserDTO getDTOById(long userId) {
+    public ApplicationUserDTO getDTOById(String userId) {
         ApplicationUserDTO applicationUserDTO = applicationUserDTOConverter.convert(getById(userId));
 
         return applicationUserDTO;

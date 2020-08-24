@@ -1,6 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto;
 
-public class StairingObject {
+public class StairingDTO {
 
     private int count;
     private int whenSec;

@@ -1,0 +1,20 @@
+{
+  "cal": 0,
+  "data": {
+    "avgSpeed": 3.6153846153846154,
+    "distance": 0.30063858787304115,
+    "elevation": 2.399993896484375,
+    "snapShots": [
+      {
+        "altitude": 386.6000061035156,
+        "latitude": 46.7631112,
+        "longitude": 23.5623169,
+        "speed": 0,
+        "whenSec": 0
+      }
+    ]
+  },
+  "duration": 4,
+  "timeStamp": 1588359812510,
+  "type": 1
+}

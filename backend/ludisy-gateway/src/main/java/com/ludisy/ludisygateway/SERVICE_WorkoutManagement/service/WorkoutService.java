@@ -8,6 +8,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WorkoutService {
@@ -21,7 +22,8 @@ public class WorkoutService {
     @Autowired
     private ApplicationUserService applicationUserService;
 
-    public int createWorkout(WorkoutDTO workoutDTO, long userId) {
+    @Transactional
+    public int createWorkout(WorkoutDTO workoutDTO, String userId) {
         ApplicationUser applicationUser = applicationUserService.getById(userId);
         Workout workout = workoutConverter.convert(workoutDTO, applicationUser);
         return 201;

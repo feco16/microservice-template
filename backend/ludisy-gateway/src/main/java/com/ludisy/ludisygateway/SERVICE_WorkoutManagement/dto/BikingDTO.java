@@ -1,6 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto;
 
-public class BikingObject {
+public class BikingDTO {
 
     private double longitude;
     private double latitude;

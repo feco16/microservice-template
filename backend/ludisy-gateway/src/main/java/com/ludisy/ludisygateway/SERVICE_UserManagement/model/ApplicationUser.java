@@ -24,7 +24,7 @@ public class ApplicationUser {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "applicationUser", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "applicationUser", fetch = FetchType.EAGER)
     private List<Workout> workouts = new ArrayList<>();
 
     public ApplicationUser() {
@@ -74,8 +74,6 @@ public class ApplicationUser {
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
     }
-
-
 
     public void addWorkout(Workout workout) {
         workouts.add(workout);

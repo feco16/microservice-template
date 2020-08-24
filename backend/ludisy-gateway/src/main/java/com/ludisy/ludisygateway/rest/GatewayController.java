@@ -24,12 +24,12 @@ public class GatewayController {
     }
 
     @GetMapping("/user/{userId}")
-    public ApplicationUserDTO getUserById(@PathVariable(value = "userId") long userId) {
+    public ApplicationUserDTO getUserById(@PathVariable(value = "userId") String userId) {
         return applicationUserService.getDTOById(userId);
     }
 
     @PostMapping("/workout")
-    public int postWorkout(@RequestBody WorkoutDTO workoutDTO, @RequestParam(value = "userId") long userId) {
+    public int postWorkout(@RequestBody WorkoutDTO workoutDTO, @RequestParam(value = "userId") String userId) {
         return workoutService.createWorkout(workoutDTO, userId);
     }
 }

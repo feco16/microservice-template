@@ -4,10 +4,10 @@ public class WorkoutDTO {
 
     private String id;
     private int duration;
-    private int timeStamp;
+    private long timeStamp;
     private double cal;
     private int type;
-    private WorkoutInstance data;
+    private WorkoutDataDTO data;
 
     public String getId() {
         return id;
@@ -25,11 +25,11 @@ public class WorkoutDTO {
         this.duration = duration;
     }
 
-    public int getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(int timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -49,11 +49,11 @@ public class WorkoutDTO {
         this.type = type;
     }
 
-    public WorkoutInstance getData() {
+    public WorkoutDataDTO getData() {
         return data;
     }
 
-    public void setData(WorkoutInstance data) {
+    public void setData(WorkoutDataDTO data) {
         this.data = data;
     }
 }

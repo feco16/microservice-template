@@ -7,4 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
 
+    Workout findByUuid(String uuid);
+
 }

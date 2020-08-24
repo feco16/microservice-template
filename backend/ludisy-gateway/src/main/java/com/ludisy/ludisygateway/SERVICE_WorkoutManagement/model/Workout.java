@@ -2,20 +2,22 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutInstance;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Objects;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Workout {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "WORKOUT_ID")
     private long workoutId;
 
@@ -26,7 +28,7 @@ public class Workout {
     private int duration;
 
     @Column(name = "TIME_STAMP")
-    private int timeStamp;
+    private long timeStamp;
 
     @Column(name = "CAL")
     private double cal;
@@ -35,7 +37,8 @@ public class Workout {
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicationUser applicationUser;
 
-//    private WorkoutInstance data;
+    @OneToOne(cascade = CascadeType.ALL)
+    private WorkoutData workoutData;
 
     public long getWorkoutId() {
         return workoutId;
@@ -61,11 +64,11 @@ public class Workout {
         this.duration = duration;
     }
 
-    public int getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(int timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -83,6 +86,14 @@ public class Workout {
 
     public void setApplicationUser(ApplicationUser applicationUser) {
         this.applicationUser = applicationUser;
+    }
+
+    public WorkoutData getWorkoutData() {
+        return workoutData;
+    }
+
+    public void setWorkoutData(WorkoutData workoutData) {
+        this.workoutData = workoutData;
     }
 
     @Override
