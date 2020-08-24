@@ -6,24 +6,24 @@ public class Constants {
 
     public enum WORKOUT_TYPE {
 
-        STAIRING("0"),
-        BIKING("1"),
-        ROLLER_SKATING("2"),
-        RUNNING("3");
+        STAIRING(0),
+        BIKING(1),
+        ROLLER_SKATING(2),
+        RUNNING(3);
 
-        private String value;
+        private int value;
 
-        WORKOUT_TYPE(String value) {
+        WORKOUT_TYPE(int value) {
             this.value = value;
         }
 
-        public String getValue() {
+        public int getValue() {
             return value;
         }
 
-        public static WORKOUT_TYPE getByName(String type) {
+        public static WORKOUT_TYPE getByValue(int value) {
             return Arrays.stream(WORKOUT_TYPE.values())
-                    .filter(t -> t.getValue().equalsIgnoreCase(type))
+                    .filter(t -> t.getValue() ==value)
                     .findFirst()
                     .orElse(null);
         }

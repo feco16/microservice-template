@@ -33,6 +33,9 @@ public class Workout {
     @Column(name = "CAL")
     private double cal;
 
+    @Column(name = "TYPE")
+    private int type;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicationUser applicationUser;
@@ -78,6 +81,14 @@ public class Workout {
 
     public void setCal(double cal) {
         this.cal = cal;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public ApplicationUser getApplicationUser() {

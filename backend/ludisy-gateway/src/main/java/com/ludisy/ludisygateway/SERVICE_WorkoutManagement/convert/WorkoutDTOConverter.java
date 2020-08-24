@@ -1,5 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert;
 
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.Constants;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,8 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
         workoutDTO.setDuration(source.getDuration());
         workoutDTO.setTimeStamp(source.getTimeStamp());
         workoutDTO.setCal(source.getCal());
-        workoutDTO.setData(workoutDataDTOConverter.convert(source.getWorkoutData()));
+        workoutDTO.setData(workoutDataDTOConverter.convert(source.getWorkoutData(),
+                Constants.WORKOUT_TYPE.getByValue(source.getType())));
 
         return workoutDTO;
     }
