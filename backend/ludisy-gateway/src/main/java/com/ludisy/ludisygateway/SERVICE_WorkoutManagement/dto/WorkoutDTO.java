@@ -7,7 +7,7 @@ public class WorkoutDTO {
     private long timeStamp;
     private double cal;
     private int type;
-    private WorkoutDataDTO data;
+    private String data;
 
     public String getId() {
         return id;
@@ -49,11 +49,11 @@ public class WorkoutDTO {
         this.type = type;
     }
 
-    public WorkoutDataDTO getData() {
-        return data;
+    public void setData(String data) {
+        this.data = data;
     }
 
-    public void setData(WorkoutDataDTO data) {
-        this.data = data;
+    public String getData() {
+        return data;
     }
 }

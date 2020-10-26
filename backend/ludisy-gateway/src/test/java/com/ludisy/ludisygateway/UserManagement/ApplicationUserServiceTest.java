@@ -3,7 +3,7 @@ package com.ludisy.ludisygateway.UserManagement;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,7 @@ public class ApplicationUserServiceTest {
     ApplicationUserService applicationUserService;
 
     @Test
-    void testApplicationUser() {
+    public void testApplicationUser() {
         logger.error("testApplicationUser started");
 
         String userId = UUID.randomUUID().toString();

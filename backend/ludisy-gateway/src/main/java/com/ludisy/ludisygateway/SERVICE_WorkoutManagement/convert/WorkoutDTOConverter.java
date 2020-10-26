@@ -21,8 +21,8 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
         workoutDTO.setDuration(source.getDuration());
         workoutDTO.setTimeStamp(source.getTimeStamp());
         workoutDTO.setCal(source.getCal());
-        workoutDTO.setData(workoutDataDTOConverter.convert(source.getWorkoutData(),
-                Constants.WORKOUT_TYPE.getByValue(source.getType())));
+//        workoutDTO.setData(workoutDataDTOConverter.convert(source.getWorkoutData(),
+//                Constants.WORKOUT_TYPE.getByValue(source.getType())));
 
         return workoutDTO;
     }

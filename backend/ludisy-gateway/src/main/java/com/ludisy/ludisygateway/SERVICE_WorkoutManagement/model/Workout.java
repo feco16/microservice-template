@@ -11,7 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Workout {
@@ -39,6 +42,13 @@ public class Workout {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicationUser applicationUser;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkoutType workoutType;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workout", fetch = FetchType.LAZY)
+    private List<Snapshot> snapshots = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private WorkoutData workoutData;
@@ -97,6 +107,22 @@ public class Workout {
 
     public void setApplicationUser(ApplicationUser applicationUser) {
         this.applicationUser = applicationUser;
+    }
+
+    public List<Snapshot> getSnapshots() {
+        return snapshots;
+    }
+
+    public void setSnapshots(List<Snapshot> snapshots) {
+        this.snapshots = snapshots;
+    }
+
+    public WorkoutType getWorkoutType() {
+        return workoutType;
+    }
+
+    public void setWorkoutType(WorkoutType workoutType) {
+        this.workoutType = workoutType;
     }
 
     public WorkoutData getWorkoutData() {

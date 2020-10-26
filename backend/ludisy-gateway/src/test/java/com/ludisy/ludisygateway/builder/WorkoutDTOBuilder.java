@@ -10,7 +10,7 @@ public class WorkoutDTOBuilder {
     private long timeStamp;
     private double cal;
     private int type;
-    private WorkoutDataDTO data;
+    private String data;
 
     public WorkoutDTOBuilder id (String id) {
         this.id = id;
@@ -27,7 +27,7 @@ public class WorkoutDTOBuilder {
         return this;
     }
 
-    public WorkoutDTOBuilder data (WorkoutDataDTO data) {
+    public WorkoutDTOBuilder data (String data) {
         this.data = data;
         return this;
     }
