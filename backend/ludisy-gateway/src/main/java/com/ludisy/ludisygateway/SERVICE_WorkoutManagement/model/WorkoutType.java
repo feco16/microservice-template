@@ -22,8 +22,8 @@ public class WorkoutType {
     @Column(name = "UUID")
     private String uuid;
 
-    @Column(name = "TYPE")
-    private int type;
+    @Column(name = "TYPE_CODE")
+    private int typeCode;
 
     @Column(name = "HAS_SNAPSHOTS")
     private boolean hasSnapshots;
@@ -32,7 +32,7 @@ public class WorkoutType {
     private List<Workout> workouts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workoutType", fetch = FetchType.EAGER)
-    private List<WorkoutTypeArgument> workoutTypeArguments = new ArrayList<>();
+    private List<TypeArgument> typeArguments = new ArrayList<>();
 
 
     public WorkoutType() {
@@ -55,19 +55,19 @@ public class WorkoutType {
     }
 
     public int getType() {
-        return type;
+        return typeCode;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setType(int typeCode) {
+        this.typeCode = typeCode;
     }
 
-    public List<WorkoutTypeArgument> getWorkoutTypeArguments() {
-        return workoutTypeArguments;
+    public List<TypeArgument> getTypeArguments() {
+        return typeArguments;
     }
 
-    public void setWorkoutTypeArguments(List<WorkoutTypeArgument> workoutTypeArguments) {
-        this.workoutTypeArguments = workoutTypeArguments;
+    public void setTypeArguments(List<TypeArgument> typeArguments) {
+        this.typeArguments = typeArguments;
     }
 
     public boolean isHasSnapshots() {

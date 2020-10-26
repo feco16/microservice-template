@@ -5,6 +5,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUse
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.TypeInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService;
 import com.ludisy.ludisygateway.TestUtils;
@@ -74,8 +75,9 @@ public class WorkoutServiceTest {
         assertNotNull(createdWorkout);
 
         WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
-//        assertNotNull(createdWorkoutDTO.getData().getSnapShots());
-//        assertEquals(snapShots.size(), createdWorkoutDTO.getData().getSnapShots().size());
+        assertNotNull(createdWorkoutDTO);
+        assertNotNull(createdWorkoutDTO.getData());
+        assertEquals(32, createdWorkoutDTO.getData().length());
     }
 
     private WorkoutDTO createWorkout(String workoutId, List<Object> snapshots) {

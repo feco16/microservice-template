@@ -2,6 +2,7 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,17 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-public class WorkoutTypeArgument {
+public class TypeArgument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "TYPE_ID")
-    private long workoutId;
-
-    @Column(name = "UUID")
-    private String uuid;
+    @Column(name = "TYPE_ARGUMENT_ID")
+    private long typeArgumentId;
 
     @Column(name = "NAME")
     private String name;
@@ -28,23 +29,18 @@ public class WorkoutTypeArgument {
     @ManyToOne(fetch = FetchType.LAZY)
     private WorkoutType workoutType;
 
-    public WorkoutTypeArgument() {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "typeArgument", fetch = FetchType.EAGER)
+    private List<TypeInstance> typeInstances = new ArrayList<>();
+
+    public TypeArgument() {
     }
 
-    public long getWorkoutId() {
-        return workoutId;
+    public long getTypeArgumentId() {
+        return typeArgumentId;
     }
 
-    public void setWorkoutId(long workoutId) {
-        this.workoutId = workoutId;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setTypeArgumentId(long typeArgumentId) {
+        this.typeArgumentId = typeArgumentId;
     }
 
     public String getName() {
@@ -61,5 +57,13 @@ public class WorkoutTypeArgument {
 
     public void setWorkoutType(WorkoutType workoutType) {
         this.workoutType = workoutType;
+    }
+
+    public List<TypeInstance> getTypeInstances() {
+        return typeInstances;
+    }
+
+    public void setTypeInstances(List<TypeInstance> typeInstances) {
+        this.typeInstances = typeInstances;
     }
 }

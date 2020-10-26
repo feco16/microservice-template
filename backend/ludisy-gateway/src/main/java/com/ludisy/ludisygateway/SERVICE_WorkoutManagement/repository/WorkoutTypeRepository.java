@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkoutTypeRepository extends JpaRepository<WorkoutType, Long> {
 
-    WorkoutType findByType(int type);
+    WorkoutType findByTypeCode(int typeCode);
 
 }

@@ -44,14 +44,14 @@ public class Workout {
     private ApplicationUser applicationUser;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private WorkoutType workoutType;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workout", fetch = FetchType.LAZY)
     private List<Snapshot> snapshots = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private WorkoutData workoutData;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    private WorkoutData workoutData;
 
     public long getWorkoutId() {
         return workoutId;
@@ -123,14 +123,6 @@ public class Workout {
 
     public void setWorkoutType(WorkoutType workoutType) {
         this.workoutType = workoutType;
-    }
-
-    public WorkoutData getWorkoutData() {
-        return workoutData;
-    }
-
-    public void setWorkoutData(WorkoutData workoutData) {
-        this.workoutData = workoutData;
     }
 
     @Override
