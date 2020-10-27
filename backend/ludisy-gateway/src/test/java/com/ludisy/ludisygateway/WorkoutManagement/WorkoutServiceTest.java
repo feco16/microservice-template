@@ -5,12 +5,10 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUse
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.TypeInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService;
 import com.ludisy.ludisygateway.TestUtils;
 import com.ludisy.ludisygateway.builder.WorkoutDTOBuilder;
-import com.ludisy.ludisygateway.builder.WorkoutDataDTOBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +65,7 @@ public class WorkoutServiceTest {
 
         applicationUserRepository.save(applicationUser);
 
-        List<Object> snapShots = TestUtils.createBikingSnapshots();
-        WorkoutDTO workoutDTO = createWorkout(workoutId, snapShots);
+        WorkoutDTO workoutDTO = createWorkout(workoutId, TestUtils.createTestJson());
         workoutService.createWorkout(workoutDTO, userId);
 
         Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getId());
@@ -77,20 +74,11 @@ public class WorkoutServiceTest {
         WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
         assertNotNull(createdWorkoutDTO);
         assertNotNull(createdWorkoutDTO.getData());
-        assertEquals(32, createdWorkoutDTO.getData().length());
+        assertEquals(274, createdWorkoutDTO.getData().length());
     }
 
-    private WorkoutDTO createWorkout(String workoutId, List<Object> snapshots) {
-        String testJson = "{\n" +
-                "        \"distance\" : 5.036980927530882,\n" +
-                "        \"snapShots\" : [ {\n" +
-                "          \"altitude\" : 415.3999938964844,\n" +
-                "          \"latitude\" : 46.7582304,\n" +
-                "          \"longitude\" : 23.6175224,\n" +
-                "          \"speed\" : 0,\n" +
-                "          \"whenSec\" : 0\n" +
-                "        } ]\n" +
-                "}";
+    private WorkoutDTO createWorkout(String workoutId, String testJson) {
+
 
         return new WorkoutDTOBuilder().id(workoutId).duration(10).type(1).data(testJson).build();
     }

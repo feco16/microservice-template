@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +35,6 @@ public class Workout {
     @Column(name = "CAL")
     private double cal;
 
-    @Column(name = "TYPE")
-    private int type;
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private ApplicationUser applicationUser;
@@ -48,10 +44,7 @@ public class Workout {
     private WorkoutType workoutType;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workout", fetch = FetchType.LAZY)
-    private List<Snapshot> snapshots = new ArrayList<>();
-
-//    @OneToOne(cascade = CascadeType.ALL)
-//    private WorkoutData workoutData;
+    private List<DataInstance> dataInstances = new ArrayList<>();
 
     public long getWorkoutId() {
         return workoutId;
@@ -93,14 +86,6 @@ public class Workout {
         this.cal = cal;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
-
     public ApplicationUser getApplicationUser() {
         return applicationUser;
     }
@@ -109,20 +94,20 @@ public class Workout {
         this.applicationUser = applicationUser;
     }
 
-    public List<Snapshot> getSnapshots() {
-        return snapshots;
-    }
-
-    public void setSnapshots(List<Snapshot> snapshots) {
-        this.snapshots = snapshots;
-    }
-
     public WorkoutType getWorkoutType() {
         return workoutType;
     }
 
     public void setWorkoutType(WorkoutType workoutType) {
         this.workoutType = workoutType;
+    }
+
+    public List<DataInstance> getDataInstances() {
+        return dataInstances;
+    }
+
+    public void setDataInstances(List<DataInstance> dataInstances) {
+        this.dataInstances = dataInstances;
     }
 
     @Override

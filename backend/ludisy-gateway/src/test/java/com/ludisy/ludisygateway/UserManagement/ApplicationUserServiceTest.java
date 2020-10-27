@@ -46,4 +46,20 @@ public class ApplicationUserServiceTest {
 
     }
 
+    // TODO
+    @Test
+    public void testGetUserWorkouts() {
+        logger.info("testGetUserWorkouts started");
+
+        String userId = UUID.randomUUID().toString();
+        ApplicationUser applicationUser = new ApplicationUser();
+        applicationUser.setApplicationUserId(124);
+        applicationUser.setUsername("Test username");
+        applicationUser.setUserId(userId);
+
+        applicationUserRepository.save(applicationUser);
+
+
+    }
+
 }

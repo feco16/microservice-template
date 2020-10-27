@@ -1,6 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model;
 
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,52 +20,61 @@ public class WorkoutData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "WORKOUT_DATA_ID")
-    private long workoutId;
+    private long workoutDataId;
 
-    @Column(name = "DISTANCE")
-    private int distance;
+    @Column(name = "NAME")
+    private String name;
 
-    @Column(name = "STAIRS_COUNT")
-    private int stairsCount;
+    @Column(name = "IS_DIRECT")
+    private boolean isDirect;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private WorkoutType workoutType;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workoutData", fetch = FetchType.EAGER)
-    private List<Biking> bikingList = new ArrayList<>();
+    private List<DataInstance> dataInstances = new ArrayList<>();
 
-    public long getWorkoutId() {
-        return workoutId;
+    public WorkoutData() {
     }
 
-    public void setWorkoutId(long workoutId) {
-        this.workoutId = workoutId;
+    public long getWorkoutDataId() {
+        return workoutDataId;
     }
 
-    public int getDistance() {
-        return distance;
+    public void setWorkoutDataId(long workoutDataId) {
+        this.workoutDataId = workoutDataId;
     }
 
-    public void setDistance(int distance) {
-        this.distance = distance;
+    public String getName() {
+        return name;
     }
 
-    public int getStairsCount() {
-        return stairsCount;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setStairsCount(int stairsCount) {
-        this.stairsCount = stairsCount;
+    public boolean isDirect() {
+        return isDirect;
     }
 
-    public List<Biking> getBikingList() {
-        return bikingList;
+    public void setDirect(boolean direct) {
+        isDirect = direct;
     }
 
-    public void setBikingList(List<Biking> bikingList) {
-        this.bikingList = bikingList;
+    public WorkoutType getWorkoutType() {
+        return workoutType;
     }
 
-    public void addBiking(Biking biking) {
-        bikingList.add(biking);
-        biking.setWorkoutData(this);
+    public void setWorkoutType(WorkoutType workoutType) {
+        this.workoutType = workoutType;
     }
 
+    public List<DataInstance> getDataInstances() {
+        return dataInstances;
+    }
+
+    public void setDataInstances(List<DataInstance> dataInstances) {
+        this.dataInstances = dataInstances;
+    }
 }

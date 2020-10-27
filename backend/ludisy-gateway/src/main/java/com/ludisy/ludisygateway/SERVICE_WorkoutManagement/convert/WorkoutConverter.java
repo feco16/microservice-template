@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
-import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Snapshot;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.TypeInstance;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.DataInstance;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutData;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutType;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.TypeArgument;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.TypeInstanceRepository;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.DataInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutTypeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,73 +31,75 @@ public class WorkoutConverter {
     WorkoutTypeRepository workoutTypeRepository;
 
     @Autowired
-    TypeInstanceRepository typeInstanceRepository;
+    DataInstanceRepository dataInstanceRepository;
 
-    @Autowired
-    WorkoutDataConverter workoutDataConverter;
-
-    // TODO populate database with fields from source.getData()
     public Workout convert(WorkoutDTO source, ApplicationUser applicationUser) {
         Workout workout = new Workout();
         workout.setUuid(source.getId());
         workout.setDuration(source.getDuration());
         workout.setTimeStamp(source.getTimeStamp());
         workout.setCal(source.getCal());
-//        workout.setType(source.getType());
 
         WorkoutType workoutType = workoutTypeRepository.findByTypeCode(source.getType());
-        List<TypeArgument> typeArgumentList = workoutType.getTypeArguments();
+        List<WorkoutData> workoutDataList = workoutType.getWorkoutData();
 
-        parse(workout.getWorkoutId(), source.getData(), typeArgumentList);
+        // TODO optimise stack variables
+        parse(workout, source.getData(), workoutDataList);
 
         workout.setWorkoutType(workoutType);
-
         applicationUser.addWorkout(workout);
 
         return workout;
     }
 
-    // TODO handle Snapshots
-    private void parse(long workoutId, String json, List<TypeArgument> typeArgumentList) {
+    private void parse(Workout workout, String json, List<WorkoutData> workoutDataList) {
 
-        List<TypeInstance> typeInstanceList = new ArrayList<>();
-        List<Snapshot> snapshotList = new ArrayList<>();
+        List<DataInstance> dataInstanceList = new ArrayList<>();
         JsonFactory factory = new JsonFactory();
 
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode;
         try {
             rootNode = mapper.readTree(json);
-            Iterator<Map.Entry<String, JsonNode>> fieldsIterator = rootNode.fields();
-            while (fieldsIterator.hasNext()) {
-
-                Map.Entry<String, JsonNode> field = fieldsIterator.next();
-                System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
-
-                if (field.getValue().getNodeType().ordinal() == 0) {
-                    Snapshot snapshot = new Snapshot();
-
-
-                } else {
-                    Optional<TypeArgument> typeArgument = retrieveArgument(field.getKey(), typeArgumentList);
-                    if (typeArgument.isPresent()) {
-                        TypeInstance typeInstance = new TypeInstance();
-                        typeInstance.setValue(field.getValue().toString());
-                        typeInstance.setTypeArgument(typeArgument.get());
-                        typeInstanceList.add(typeInstance);
-                    }
-                }
-
-            }
+            iterateNode(workout, rootNode, workoutDataList, dataInstanceList, -1);
         } catch (Exception e) {
             logger.error("An error occurred at workout converter!", e);
         }
-        typeInstanceRepository.saveAll(typeInstanceList);
+        dataInstanceRepository.saveAll(dataInstanceList);
 
     }
 
-    private Optional<TypeArgument> retrieveArgument(String key, List<TypeArgument> typeArgumentList) {
-        return typeArgumentList.stream()
+    private void iterateNode(Workout workout, JsonNode jsonNode, List<WorkoutData> workoutDataList,
+                             List<DataInstance> dataInstanceList, int listIndex) {
+        Iterator<Map.Entry<String, JsonNode>> fieldsIterator = jsonNode.fields();
+        while (fieldsIterator.hasNext()) {
+
+            Map.Entry<String, JsonNode> field = fieldsIterator.next();
+            System.out.println("Key: " + field.getKey() + "\tValue:" + field.getValue());
+
+            if (field.getValue().getNodeType().ordinal() == 0) {
+                for (int index = 0; index < field.getValue().size(); index++) {
+                    iterateNode(workout, field.getValue().get(index), workoutDataList, dataInstanceList, index);
+                }
+            } else {
+                Optional<WorkoutData> typeArgument = retrieveArgument(field.getKey(), workoutDataList);
+                if (typeArgument.isPresent()) {
+                    DataInstance dataInstance = new DataInstance();
+                    dataInstance.setValue(field.getValue().toString());
+                    dataInstance.setListIndex(listIndex);
+                    dataInstance.setWorkoutData(typeArgument.get());
+                    dataInstance.setWorkout(workout);
+                    dataInstanceList.add(dataInstance);
+                } else {
+                    logger.debug("Workout with id {} doesn't have field {}", workout.getWorkoutId(),
+                            field.getKey());
+                }
+            }
+        }
+    }
+
+    private Optional<WorkoutData> retrieveArgument(String key, List<WorkoutData> workoutDataList) {
+        return workoutDataList.stream()
                 .filter(arg -> arg.getName().equals(key))
                 .findFirst();
     }

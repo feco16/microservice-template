@@ -25,14 +25,11 @@ public class WorkoutType {
     @Column(name = "TYPE_CODE")
     private int typeCode;
 
-    @Column(name = "HAS_SNAPSHOTS")
-    private boolean hasSnapshots;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workoutType", fetch = FetchType.LAZY)
     private List<Workout> workouts = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workoutType", fetch = FetchType.EAGER)
-    private List<TypeArgument> typeArguments = new ArrayList<>();
+    private List<WorkoutData> workoutData = new ArrayList<>();
 
 
     public WorkoutType() {
@@ -62,20 +59,12 @@ public class WorkoutType {
         this.typeCode = typeCode;
     }
 
-    public List<TypeArgument> getTypeArguments() {
-        return typeArguments;
+    public List<WorkoutData> getWorkoutData() {
+        return workoutData;
     }
 
-    public void setTypeArguments(List<TypeArgument> typeArguments) {
-        this.typeArguments = typeArguments;
-    }
-
-    public boolean isHasSnapshots() {
-        return hasSnapshots;
-    }
-
-    public void setHasSnapshots(boolean hasSnapshots) {
-        this.hasSnapshots = hasSnapshots;
+    public void setWorkoutData(List<WorkoutData> workoutData) {
+        this.workoutData = workoutData;
     }
 
     public List<Workout> getWorkouts() {
