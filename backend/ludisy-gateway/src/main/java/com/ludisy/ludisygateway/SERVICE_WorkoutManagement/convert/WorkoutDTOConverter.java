@@ -28,6 +28,7 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
         workoutDTO.setDuration(source.getDuration());
         workoutDTO.setTimeStamp(source.getTimeStamp());
         workoutDTO.setCal(source.getCal());
+        workoutDTO.setType(source.getWorkoutType().getTypeCode());
 
         List<DataInstance> dataInstanceList = dataInstanceRepository.findByWorkout(source);
         workoutDTO.setData(populateData(dataInstanceList));
@@ -45,15 +46,15 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
         for (DataInstance dataInstance : dataInstanceList) {
             if (null != dataInstance) {
                 if (dataInstance.getListIndex() == -1) {
-                    jsonObject.put(dataInstance.getWorkoutData().getName(), dataInstance.getValue());
+                    jsonObject.put(dataInstance.getWorkoutData().getName(), calculateType(dataInstance.getValue()));
                 } else {
                     onlyDirect = false;
                     if (dataInstance.getListIndex() == listIndex) {
-                        jsonObjectIndirect.put(dataInstance.getWorkoutData().getName(), dataInstance.getValue());
+                        jsonObjectIndirect.put(dataInstance.getWorkoutData().getName(), calculateType(dataInstance.getValue()));
                     } else {
                         jsonArray.add(jsonObjectIndirect);
                         jsonObjectIndirect = new JSONObject();
-                        jsonObjectIndirect.put(dataInstance.getWorkoutData().getName(), dataInstance.getValue());
+                        jsonObjectIndirect.put(dataInstance.getWorkoutData().getName(), calculateType(dataInstance.getValue()));
                         listIndex++;
                     }
                 }
@@ -64,5 +65,19 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
             jsonObject.put("snapShots", jsonArray);
         }
         return jsonObject;
+    }
+
+    private Object calculateType(String value) {
+        try {
+            int intValue =  Integer.parseInt(value);
+            return intValue;
+        } catch (NumberFormatException e) {
+            try {
+                double doubleValue = Double.parseDouble(value);
+                return doubleValue;
+            } catch (NumberFormatException e1) {
+                return value;
+            }
+        }
     }
 }

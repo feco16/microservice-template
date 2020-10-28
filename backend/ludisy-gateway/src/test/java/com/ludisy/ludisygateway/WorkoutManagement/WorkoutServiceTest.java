@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
@@ -84,18 +85,40 @@ public class WorkoutServiceTest {
                 get(1)).size());
     }
 
+    // TODO resolve cal double - int problem
     @Test
     public void testBikingWorkout1() {
 
         String biking1 = TestUtils.readJson("biking1.json");
+        String userId = UUID.randomUUID().toString();
+        ApplicationUser applicationUser = new ApplicationUser();
+        applicationUser.setApplicationUserId(1);
+        applicationUser.setUserId(userId);
+
+        applicationUserRepository.save(applicationUser);
 
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+            workoutService.createWorkout(workoutDTO, userId);
+
+            Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());
+            assertNotNull(createdWorkout);
+
+            WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
+
+            String createdWorkoutJson = objectMapper.writeValueAsString(createdWorkoutDTO);
+
+            char[] initArray = biking1.toCharArray();
+            Arrays.sort(initArray);
+
+            char[] createdArray = createdWorkoutJson.toCharArray();
+            Arrays.sort(createdArray);
+
+            assertEquals(new String(initArray), new String(createdArray));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
 
     }
 

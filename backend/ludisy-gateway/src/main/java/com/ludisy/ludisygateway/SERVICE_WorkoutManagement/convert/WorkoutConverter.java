@@ -86,7 +86,7 @@ public class WorkoutConverter {
                 Optional<WorkoutData> typeArgument = retrieveArgument(field.getKey(), workoutDataList);
                 if (typeArgument.isPresent()) {
                     DataInstance dataInstance = new DataInstance();
-                    dataInstance.setValue(new Double(field.getValue().toString()));
+                    dataInstance.setValue(field.getValue().toString());
                     dataInstance.setListIndex(listIndex);
                     dataInstance.setWorkoutData(typeArgument.get());
                     dataInstance.setWorkout(workout);
