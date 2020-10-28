@@ -11,6 +11,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutData;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutType;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.DataInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutTypeRepository;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class WorkoutConverter {
 
     public Workout convert(WorkoutDTO source, ApplicationUser applicationUser) {
         Workout workout = new Workout();
-        workout.setUuid(source.getId());
+        workout.setUuid(source.getUuid());
         workout.setDuration(source.getDuration());
         workout.setTimeStamp(source.getTimeStamp());
         workout.setCal(source.getCal());
@@ -52,7 +53,7 @@ public class WorkoutConverter {
         return workout;
     }
 
-    private void parse(Workout workout, String json, List<WorkoutData> workoutDataList) {
+    private void parse(Workout workout, JSONObject json, List<WorkoutData> workoutDataList) {
 
         List<DataInstance> dataInstanceList = new ArrayList<>();
         JsonFactory factory = new JsonFactory();
@@ -60,7 +61,7 @@ public class WorkoutConverter {
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode;
         try {
-            rootNode = mapper.readTree(json);
+            rootNode = mapper.readTree(json.toString());
             iterateNode(workout, rootNode, workoutDataList, dataInstanceList, -1);
         } catch (Exception e) {
             logger.error("An error occurred at workout converter!", e);

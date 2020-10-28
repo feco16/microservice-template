@@ -1,22 +1,16 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.json.simple.JSONObject;
+
 public class WorkoutDTO {
 
-    private String id;
     private String uuid;
     private int duration;
     private long timeStamp;
     private double cal;
     private int type;
-    private String data;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private JSONObject data;
 
     public String getUuid() {
         return uuid;
@@ -58,11 +52,11 @@ public class WorkoutDTO {
         this.type = type;
     }
 
-    public void setData(String data) {
+    public void setData(JSONObject data) {
         this.data = data;
     }
 
-    public String getData() {
+    public JSONObject getData() {
         return data;
     }
 }

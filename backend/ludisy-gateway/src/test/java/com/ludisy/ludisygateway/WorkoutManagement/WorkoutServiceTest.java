@@ -1,5 +1,7 @@
 package com.ludisy.ludisygateway.WorkoutManagement;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
@@ -9,13 +11,14 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepo
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService;
 import com.ludisy.ludisygateway.TestUtils;
 import com.ludisy.ludisygateway.builder.WorkoutDTOBuilder;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
@@ -50,7 +53,7 @@ public class WorkoutServiceTest {
         WorkoutDTO workoutDTO = createWorkout(workoutId, null);
         workoutService.createWorkout(workoutDTO, userId);
 
-        Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getId());
+        Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());
         assertNotNull(createdWorkout);
 
     }
@@ -61,6 +64,7 @@ public class WorkoutServiceTest {
 
         String userId = UUID.randomUUID().toString();
         ApplicationUser applicationUser = new ApplicationUser();
+        applicationUser.setApplicationUserId(1);
         applicationUser.setUserId(userId);
 
         applicationUserRepository.save(applicationUser);
@@ -68,13 +72,31 @@ public class WorkoutServiceTest {
         WorkoutDTO workoutDTO = createWorkout(workoutId, TestUtils.createTestJson());
         workoutService.createWorkout(workoutDTO, userId);
 
-        Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getId());
+        Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());
         assertNotNull(createdWorkout);
 
         WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
         assertNotNull(createdWorkoutDTO);
         assertNotNull(createdWorkoutDTO.getData());
-        assertEquals(258, createdWorkoutDTO.getData().length());
+        assertEquals(5, ((JSONObject) ((JSONArray) createdWorkoutDTO.getData().get("snapShots")).
+                get(0)).size());
+        assertEquals(5, ((JSONObject) ((JSONArray) createdWorkoutDTO.getData().get("snapShots")).
+                get(1)).size());
+    }
+
+    @Test
+    public void testBikingWorkout1() {
+
+        String biking1 = TestUtils.readJson("biking1.json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     // TODO Test realworkouts.json
@@ -83,9 +105,9 @@ public class WorkoutServiceTest {
         TestUtils.readJson("realworkouts.json");
     }
 
-    private WorkoutDTO createWorkout(String workoutId, String testJson) {
+    private WorkoutDTO createWorkout(String workoutId, JSONObject testJson) {
 
-        return new WorkoutDTOBuilder().id(workoutId).uuid(UUID.randomUUID().toString())
+        return new WorkoutDTOBuilder().uuid(UUID.randomUUID().toString())
                 .duration(10).type(1).data(testJson).build();
     }
 

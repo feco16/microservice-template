@@ -36,7 +36,7 @@ public class TestUtils {
 
     }
 
-    public static String createTestJson() {
+    public static JSONObject createTestJson() {
         String testJson = "{\n" +
                 "\"distance\" : 5.036980927530882,\n" +
                 "\"snapShots\" : [ {\n" +
@@ -54,7 +54,13 @@ public class TestUtils {
                 "} ]\n" +
                 "}";
 
-        return testJson;
+        JSONParser jsonParser = new JSONParser();
+        try {
+            return (JSONObject) jsonParser.parse(testJson);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new JSONObject();
     }
 
 }

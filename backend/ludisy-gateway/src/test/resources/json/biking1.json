@@ -1,0 +1,26 @@
+{
+  "uuid": "UUID_PLACEHOLDER",
+  "cal": 0,
+  "data": {
+    "distance": 1.5078760151703874,
+    "snapShots": [
+      {
+        "altitude": 0,
+        "latitude": 46.7626717,
+        "longitude": 23.6098617,
+        "speed": 67.968,
+        "whenSec": 0
+      },
+      {
+        "altitude": 0,
+        "latitude": 46.7630617,
+        "longitude": 23.60985,
+        "speed": 45.144,
+        "whenSec": 10
+      }
+    ]
+  },
+  "duration": 102,
+  "timeStamp": 1589485498502,
+  "type": 1
+}

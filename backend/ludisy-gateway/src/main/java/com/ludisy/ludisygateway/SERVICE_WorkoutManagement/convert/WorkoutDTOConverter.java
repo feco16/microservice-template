@@ -24,7 +24,6 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
     public WorkoutDTO convert(Workout source) {
 
         WorkoutDTO workoutDTO = new WorkoutDTO();
-        workoutDTO.setId(source.getUuid());
         workoutDTO.setUuid(source.getUuid());
         workoutDTO.setDuration(source.getDuration());
         workoutDTO.setTimeStamp(source.getTimeStamp());
@@ -36,7 +35,7 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
         return workoutDTO;
     }
 
-    private String populateData(List<DataInstance> dataInstanceList) {
+    private JSONObject populateData(List<DataInstance> dataInstanceList) {
         int listIndex = 0;
         boolean onlyDirect = true;
 
@@ -64,6 +63,6 @@ public class WorkoutDTOConverter implements Converter<Workout, WorkoutDTO> {
             jsonArray.add(jsonObjectIndirect);
             jsonObject.put("snapShots", jsonArray);
         }
-        return jsonObject.toJSONString();
+        return jsonObject;
     }
 }
