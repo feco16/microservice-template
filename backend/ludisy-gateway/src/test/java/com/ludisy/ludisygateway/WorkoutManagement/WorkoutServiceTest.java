@@ -74,13 +74,19 @@ public class WorkoutServiceTest {
         WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
         assertNotNull(createdWorkoutDTO);
         assertNotNull(createdWorkoutDTO.getData());
-        assertEquals(274, createdWorkoutDTO.getData().length());
+        assertEquals(258, createdWorkoutDTO.getData().length());
+    }
+
+    // TODO Test realworkouts.json
+    @Test
+    public void testRealJson() {
+        TestUtils.readJson("realworkouts.json");
     }
 
     private WorkoutDTO createWorkout(String workoutId, String testJson) {
 
-
-        return new WorkoutDTOBuilder().id(workoutId).duration(10).type(1).data(testJson).build();
+        return new WorkoutDTOBuilder().id(workoutId).uuid(UUID.randomUUID().toString())
+                .duration(10).type(1).data(testJson).build();
     }
 
 }

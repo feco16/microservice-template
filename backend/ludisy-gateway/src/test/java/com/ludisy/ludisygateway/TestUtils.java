@@ -1,5 +1,11 @@
 package com.ludisy.ludisygateway;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Random;
 
 public class TestUtils {
@@ -12,6 +18,22 @@ public class TestUtils {
 
     public static double getRandomDouble() {
         return random.nextDouble() * 100;
+    }
+
+    public static String readJson(String fileName) {
+        JSONParser parser = new JSONParser();
+
+        try {
+            Object obj = parser.parse(new FileReader("src/test/resources/json/" + fileName));
+
+            JSONObject jsonObject = (JSONObject) obj;
+            System.out.println(jsonObject);
+            return jsonObject.toJSONString();
+        } catch (IOException | ParseException e) {
+
+        }
+        return "";
+
     }
 
     public static String createTestJson() {

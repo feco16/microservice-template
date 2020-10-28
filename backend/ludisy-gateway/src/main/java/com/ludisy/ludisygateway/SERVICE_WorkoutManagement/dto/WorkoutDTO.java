@@ -3,6 +3,7 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto;
 public class WorkoutDTO {
 
     private String id;
+    private String uuid;
     private int duration;
     private long timeStamp;
     private double cal;
@@ -15,6 +16,14 @@ public class WorkoutDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public int getDuration() {

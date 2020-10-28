@@ -1,11 +1,11 @@
 package com.ludisy.ludisygateway.builder;
 
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDataDTO;
 
 public class WorkoutDTOBuilder {
 
     private String id;
+    private String uuid;
     private int duration;
     private long timeStamp;
     private double cal;
@@ -14,6 +14,11 @@ public class WorkoutDTOBuilder {
 
     public WorkoutDTOBuilder id (String id) {
         this.id = id;
+        return this;
+    }
+
+    public WorkoutDTOBuilder uuid (String uuid) {
+        this.uuid = uuid;
         return this;
     }
 
@@ -35,6 +40,7 @@ public class WorkoutDTOBuilder {
     public WorkoutDTO build() {
         WorkoutDTO workoutDTO = new WorkoutDTO();
         workoutDTO.setId(id);
+        workoutDTO.setUuid(uuid);
         workoutDTO.setDuration(duration);
         workoutDTO.setType(type);
         workoutDTO.setData(data);

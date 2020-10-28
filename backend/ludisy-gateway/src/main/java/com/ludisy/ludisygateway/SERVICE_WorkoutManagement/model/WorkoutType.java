@@ -17,13 +17,13 @@ public class WorkoutType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "TYPE_ID")
-    private long workoutId;
-
-    @Column(name = "UUID")
-    private String uuid;
+    private long typeId;
 
     @Column(name = "TYPE_CODE")
     private int typeCode;
+
+    @Column(name = "TYPE_NAME")
+    private String typeName;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workoutType", fetch = FetchType.LAZY)
     private List<Workout> workouts = new ArrayList<>();
@@ -35,36 +35,28 @@ public class WorkoutType {
     public WorkoutType() {
     }
 
-    public long getWorkoutId() {
-        return workoutId;
+    public long getTypeId() {
+        return typeId;
     }
 
-    public void setWorkoutId(long workoutId) {
-        this.workoutId = workoutId;
+    public void setTypeId(long typeId) {
+        this.typeId = typeId;
     }
 
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public int getType() {
+    public int getTypeCode() {
         return typeCode;
     }
 
-    public void setType(int typeCode) {
+    public void setTypeCode(int typeCode) {
         this.typeCode = typeCode;
     }
 
-    public List<WorkoutData> getWorkoutData() {
-        return workoutData;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setWorkoutData(List<WorkoutData> workoutData) {
-        this.workoutData = workoutData;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public List<Workout> getWorkouts() {
@@ -73,5 +65,13 @@ public class WorkoutType {
 
     public void setWorkouts(List<Workout> workouts) {
         this.workouts = workouts;
+    }
+
+    public List<WorkoutData> getWorkoutData() {
+        return workoutData;
+    }
+
+    public void setWorkoutData(List<WorkoutData> workoutData) {
+        this.workoutData = workoutData;
     }
 }

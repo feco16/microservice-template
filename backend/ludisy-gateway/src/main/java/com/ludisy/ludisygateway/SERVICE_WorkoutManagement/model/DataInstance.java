@@ -19,7 +19,7 @@ public class DataInstance {
     private long dataInstanceId;
 
     @Column(name = "VALUE")
-    private String value;
+    private Double value;
 
     @Column(name = "LIST_INDEX")
     private int listIndex;
@@ -40,11 +40,11 @@ public class DataInstance {
         this.dataInstanceId = dataInstanceId;
     }
 
-    public String getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
