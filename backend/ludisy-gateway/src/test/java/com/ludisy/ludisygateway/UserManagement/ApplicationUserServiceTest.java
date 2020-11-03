@@ -1,8 +1,14 @@
 package com.ludisy.ludisygateway.UserManagement;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
+import com.ludisy.ludisygateway.TestUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -11,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
@@ -28,13 +35,16 @@ public class ApplicationUserServiceTest {
     @Autowired
     ApplicationUserService applicationUserService;
 
+    @Autowired
+    WorkoutConverter workoutConverter;
+
     @Test
     public void testApplicationUser() {
         logger.error("testApplicationUser started");
 
         String userId = UUID.randomUUID().toString();
         ApplicationUser applicationUser = new ApplicationUser();
-        applicationUser.setApplicationUserId(123);
+        applicationUser.setApplicationUserId(101);
         applicationUser.setUsername("Test username");
         applicationUser.setUserId(userId);
 
@@ -46,20 +56,31 @@ public class ApplicationUserServiceTest {
 
     }
 
-    // TODO
+    // TODO ! optimize hibernate relation to make the test work
+    @Ignore
     @Test
-    public void testGetUserWorkouts() {
+    public void testGetUserWorkouts() throws JsonProcessingException {
         logger.info("testGetUserWorkouts started");
 
         String userId = UUID.randomUUID().toString();
         ApplicationUser applicationUser = new ApplicationUser();
-        applicationUser.setApplicationUserId(124);
+        applicationUser.setApplicationUserId(102);
         applicationUser.setUsername("Test username");
         applicationUser.setUserId(userId);
 
+        String biking1 = TestUtils.readJson("biking1.json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+
+        applicationUser.setWorkouts(Collections.singletonList(workoutConverter.convert(workoutDTO, applicationUser)));
+
         applicationUserRepository.save(applicationUser);
 
+        ApplicationUser createdApplicationUser = applicationUserService.getById(userId);
 
+        assertEquals(applicationUser.getWorkouts().get(0).getDataInstances().size(),
+                createdApplicationUser.getWorkouts().get(0).getDataInstances().size());
     }
 
 }

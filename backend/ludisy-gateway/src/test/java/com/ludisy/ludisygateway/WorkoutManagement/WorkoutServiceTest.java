@@ -9,10 +9,12 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService;
+import com.ludisy.ludisygateway.TestConstants;
 import com.ludisy.ludisygateway.TestUtils;
 import com.ludisy.ludisygateway.builder.WorkoutDTOBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -87,45 +91,61 @@ public class WorkoutServiceTest {
 
     // TODO resolve cal double - int problem
     @Test
-    public void testBikingWorkout1() {
+    public void testBikingWorkout1() throws JsonProcessingException {
 
         String biking1 = TestUtils.readJson("biking1.json");
-        String userId = UUID.randomUUID().toString();
-        ApplicationUser applicationUser = new ApplicationUser();
-        applicationUser.setApplicationUserId(1);
-        applicationUser.setUserId(userId);
-
-        applicationUserRepository.save(applicationUser);
+        String userId = createUser();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
-            workoutService.createWorkout(workoutDTO, userId);
+        WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+        workoutService.createWorkout(workoutDTO, userId);
 
-            Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());
-            assertNotNull(createdWorkout);
+        Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());
+        assertNotNull(createdWorkout);
 
-            WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
+        WorkoutDTO createdWorkoutDTO = workoutDTOConverter.convert(createdWorkout);
 
-            String createdWorkoutJson = objectMapper.writeValueAsString(createdWorkoutDTO);
-
-            char[] initArray = biking1.toCharArray();
-            Arrays.sort(initArray);
-
-            char[] createdArray = createdWorkoutJson.toCharArray();
-            Arrays.sort(createdArray);
-
-            assertEquals(new String(initArray), new String(createdArray));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        assertTrue(compareWorkouts(workoutDTO, createdWorkoutDTO));
 
     }
 
     // TODO Test realworkouts.json
+    @Ignore
     @Test
-    public void testRealJson() {
-        TestUtils.readJson("realworkouts.json");
+    public void testRealJson() throws JsonProcessingException {
+        String realkWorkouts = TestUtils.readJson("realworkouts.json");
+
+        String userId = createUser();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        List<WorkoutDTO> workoutDTOList = Arrays.asList(new ObjectMapper().readValue(realkWorkouts, WorkoutDTO[].class));
+        workoutDTOList.stream()
+                .forEach(workoutDTO ->  workoutService.createWorkout(workoutDTO, userId));
+    }
+
+    private boolean compareWorkouts(WorkoutDTO inputDTO, WorkoutDTO outputDTO) throws JsonProcessingException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String inputJSON = objectMapper.writeValueAsString(inputDTO);
+        String outputJSON = objectMapper.writeValueAsString(outputDTO);
+
+        char[] inputArray = inputJSON.toCharArray();
+        Arrays.sort(inputArray);
+
+        char[] outputArray = outputJSON.toCharArray();
+        Arrays.sort(outputArray);
+
+        return new String(inputArray).equals(new String(outputArray));
+    }
+
+    private String createUser() {
+        String userId = UUID.randomUUID().toString();
+        ApplicationUser applicationUser = new ApplicationUser();
+        applicationUser.setApplicationUserId(TestConstants.TEST_APPLICATION_USER_ID);
+        applicationUser.setUserId(userId);
+
+        applicationUserRepository.save(applicationUser);
+        return userId;
     }
 
     private WorkoutDTO createWorkout(String workoutId, JSONObject testJson) {

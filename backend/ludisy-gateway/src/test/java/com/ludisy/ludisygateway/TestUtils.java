@@ -1,5 +1,6 @@
 package com.ludisy.ludisygateway;
 
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.CustomException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -25,15 +26,10 @@ public class TestUtils {
 
         try {
             Object obj = parser.parse(new FileReader("src/test/resources/json/" + fileName));
-
-            JSONObject jsonObject = (JSONObject) obj;
-            System.out.println(jsonObject);
-            return jsonObject.toJSONString();
+            return obj.toString();
         } catch (IOException | ParseException e) {
-
+            throw new CustomException("Can't read json object!");
         }
-        return "";
-
     }
 
     public static JSONObject createTestJson() {

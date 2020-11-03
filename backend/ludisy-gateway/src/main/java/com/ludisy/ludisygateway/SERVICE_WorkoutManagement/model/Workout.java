@@ -2,7 +2,6 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

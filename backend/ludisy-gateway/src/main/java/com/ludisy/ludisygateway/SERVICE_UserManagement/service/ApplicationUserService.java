@@ -66,4 +66,12 @@ public class ApplicationUserService {
 
         return applicationUserDTO;
     }
+
+    // TODO delete workouts
+    public void deleteWorkoutsByUserId(String userId) {
+        ApplicationUser applicationUser = getById(userId);
+//        applicationUser.setWorkouts(new ArrayList<>());
+        applicationUserRepository.save(applicationUser);
+        applicationUserRepository.flush();
+    }
 }

@@ -10,6 +10,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutData;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutType;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.DataInstanceRepository;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutTypeRepository;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -29,6 +30,9 @@ public class WorkoutConverter {
     private static final Logger logger = LoggerFactory.getLogger(WorkoutConverter.class);
 
     @Autowired
+    WorkoutRepository workoutRepository;
+
+    @Autowired
     WorkoutTypeRepository workoutTypeRepository;
 
     @Autowired
@@ -43,17 +47,16 @@ public class WorkoutConverter {
 
         WorkoutType workoutType = workoutTypeRepository.findByTypeCode(source.getType());
         List<WorkoutData> workoutDataList = workoutType.getWorkoutData();
+        workout.setWorkoutType(workoutType);
 
         // TODO optimise stack variables
-        parse(workout, source.getData(), workoutDataList);
-
-        workout.setWorkoutType(workoutType);
+        workout.setDataInstances( parse(workout, source.getData(), workoutDataList));
         applicationUser.addWorkout(workout);
 
         return workout;
     }
 
-    private void parse(Workout workout, JSONObject json, List<WorkoutData> workoutDataList) {
+    private List<DataInstance> parse(Workout workout, JSONObject json, List<WorkoutData> workoutDataList) {
 
         List<DataInstance> dataInstanceList = new ArrayList<>();
         JsonFactory factory = new JsonFactory();
@@ -66,8 +69,10 @@ public class WorkoutConverter {
         } catch (Exception e) {
             logger.error("An error occurred at workout converter!", e);
         }
+        workoutRepository.save(workout);
         dataInstanceRepository.saveAll(dataInstanceList);
 
+        return dataInstanceList;
     }
 
     private void iterateNode(Workout workout, JsonNode jsonNode, List<WorkoutData> workoutDataList,
