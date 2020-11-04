@@ -22,7 +22,14 @@ public class ApplicationUserConverter implements Converter<ApplicationUserDTO, A
     @Override
     public ApplicationUser convert(ApplicationUserDTO source) {
         ApplicationUser applicationUser = new ApplicationUser();
+        applicationUser.setBirthDate(source.getBirthDate());
+        applicationUser.setCoundDownSec(source.getCoundDownSec());
+        applicationUser.setDisplayName(source.getDisplayName());
+        applicationUser.setGender(source.getGender());
+        applicationUser.setHeight(source.getHeight());
+        applicationUser.setPhotoUrl(source.getPhotoUrl());
         applicationUser.setUserId(source.getUserId());
+        applicationUser.setWeight(source.getWeight());
         applicationUser.setUsername(source.getUsername());
         applicationUser.setPassword(source.getPassword());
 

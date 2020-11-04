@@ -30,6 +30,21 @@ public class GatewayController {
     }
 
     // UserManagement
+
+    // TODO test
+    @PostMapping("/user")
+    public int postUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
+        logger.info("Create user with id: {}", applicationUserDTO.getUserId());
+        return applicationUserService.createUser(applicationUserDTO);
+    }
+
+    // TODO test
+    @PutMapping("/user")
+    public int putUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
+        logger.info("Modify user with id: {}", applicationUserDTO.getUserId());
+        return applicationUserService.modifyUser(applicationUserDTO);
+    }
+
     @GetMapping("/user/{userId}")
     public ApplicationUserDTO getUserById(@PathVariable(value = "userId") String userId) {
         logger.info("Get user by id: {}", userId);

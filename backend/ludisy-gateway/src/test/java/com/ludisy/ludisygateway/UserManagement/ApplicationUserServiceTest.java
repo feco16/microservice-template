@@ -83,4 +83,11 @@ public class ApplicationUserServiceTest {
                 createdApplicationUser.getWorkouts().get(0).getDataInstances().size());
     }
 
+    // TODO
+    @Ignore
+    @Test
+    public void testDeleteWorkoutsByUserId() {
+
+    }
+
 }

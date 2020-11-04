@@ -4,6 +4,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Entity
@@ -155,5 +156,18 @@ public class ApplicationUser {
     public void removeWorkout(Workout workout) {
         workouts.remove(workout);
         workout.setApplicationUser(null);
+    }
+
+    public void wipeAllWorkout() {
+        workouts.stream()
+                .forEach(workout -> {
+                    workout.removeDataInstances();
+                    workout.setDataInstances(null);
+                });
+        for (Iterator<Workout> iterator = workouts.iterator(); iterator.hasNext(); ) {
+            Workout workout = iterator.next();
+            workout.setApplicationUser(null);
+            iterator.remove();
+        }
     }
 }

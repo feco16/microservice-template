@@ -1,5 +1,6 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.service;
 
+import com.ludisy.ludisygateway.SERVICE_UserManagement.converter.ApplicationUserConverter;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.converter.ApplicationUserDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.dto.ApplicationUserDTO;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.dto.JwtRequest;
@@ -8,6 +9,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,9 @@ public class ApplicationUserService {
     ApplicationUserDTOConverter applicationUserDTOConverter;
 
     @Autowired
+    ApplicationUserConverter applicationUserConverter;
+
+    @Autowired
     private ApplicationUserRepository applicationUserRepository;
 
     public ResponseEntity<?> authenticate(JwtRequest authenticationRequest) throws Exception {
@@ -55,6 +60,23 @@ public class ApplicationUserService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    public int createUser(ApplicationUserDTO applicationUserDTO) {
+        ApplicationUser applicationUser = applicationUserConverter.convert(applicationUserDTO);
+        applicationUserRepository.save(applicationUser);
+        return 201;
+    }
+
+    public int modifyUser(ApplicationUserDTO applicationUserDTO) {
+        ApplicationUser applicationUser = applicationUserRepository.findByUserId(applicationUserDTO.getUserId());
+        if (null == applicationUser) {
+            throw new CustomException("The user with id " + applicationUser.getUserId() + " does not exists");
+        }
+        ApplicationUser modifiedApplicationUser = applicationUserConverter.convert(applicationUserDTO);
+        modifiedApplicationUser.setApplicationUserId(applicationUser.getApplicationUserId());
+        applicationUserRepository.save(applicationUser);
+        return 201;
+    }
+
     public ApplicationUser getById(String userId) {
         logger.info("Get application user with id {}", userId);
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(userId);
@@ -67,11 +89,9 @@ public class ApplicationUserService {
         return applicationUserDTO;
     }
 
-    // TODO delete workouts
     public void deleteWorkoutsByUserId(String userId) {
         ApplicationUser applicationUser = getById(userId);
-//        applicationUser.setWorkouts(new ArrayList<>());
+        applicationUser.wipeAllWorkout();
         applicationUserRepository.save(applicationUser);
-        applicationUserRepository.flush();
     }
 }

@@ -109,6 +109,14 @@ public class Workout {
         this.dataInstances = dataInstances;
     }
 
+    public void removeDataInstances() {
+        if (dataInstances == null) {
+            return;
+        }
+        dataInstances.stream()
+                .forEach(dataInstance -> dataInstance.setWorkout(null));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
