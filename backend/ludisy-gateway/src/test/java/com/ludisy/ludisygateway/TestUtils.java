@@ -1,6 +1,6 @@
 package com.ludisy.ludisygateway;
 
-import com.ludisy.ludisygateway.shared.CustomException;
+import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -28,7 +28,7 @@ public class TestUtils {
             Object obj = parser.parse(new FileReader("src/test/resources/json/" + fileName));
             return obj.toString();
         } catch (IOException | ParseException e) {
-            throw new CustomException("Can't read json object!");
+            throw new CustomBadRequestException("Can't read json object!");
         }
     }
 

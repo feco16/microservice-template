@@ -9,7 +9,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
-import com.ludisy.ludisygateway.shared.CustomException;
+import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +20,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class ApplicationUserService {
@@ -69,7 +71,7 @@ public class ApplicationUserService {
     public int modifyUser(ApplicationUserDTO applicationUserDTO) {
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(applicationUserDTO.getUserId());
         if (null == applicationUser) {
-            throw new CustomException("The user with id " + applicationUser.getUserId() + " does not exists");
+            throw new CustomBadRequestException("The user with id " + applicationUser.getUserId() + " does not exists");
         }
         ApplicationUser modifiedApplicationUser = applicationUserConverter.convert(applicationUserDTO);
         modifiedApplicationUser.setApplicationUserId(applicationUser.getApplicationUserId());
@@ -89,6 +91,7 @@ public class ApplicationUserService {
         return applicationUserDTO;
     }
 
+    @Transactional
     public void deleteWorkoutsByUserId(String userId) {
         ApplicationUser applicationUser = getById(userId);
         applicationUser.wipeAllWorkout();

@@ -2,7 +2,7 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
-import com.ludisy.ludisygateway.shared.CustomException;
+import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
@@ -34,7 +34,7 @@ public class WorkoutService {
     public int createWorkout(WorkoutDTO workoutDTO, String userId) {
         ApplicationUser applicationUser = applicationUserService.getById(userId);
         if (null == applicationUser) {
-            throw new CustomException("The user with id " + userId + " does not exist!");
+            throw new CustomBadRequestException("The user with id " + userId + " does not exist!");
         }
         Workout workout = workoutConverter.convert(workoutDTO, applicationUser);
         return 201;

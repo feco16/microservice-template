@@ -7,10 +7,8 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUse
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.TestUtils;
-import org.junit.Ignore;
+import com.ludisy.ludisygateway.builder.ApplicationUserBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -58,19 +56,15 @@ public class ApplicationUserServiceTest {
 
     }
 
-    // TODO ! optimize hibernate relation to make the test work
-    @Ignore
     @Test
     public void testGetUserWorkouts() throws JsonProcessingException {
         logger.info("testGetUserWorkouts started");
 
         String userId = UUID.randomUUID().toString();
-        ApplicationUser applicationUser = new ApplicationUser();
-        applicationUser.setApplicationUserId(102);
-        applicationUser.setUsername("Test username");
-        applicationUser.setUserId(userId);
+        ApplicationUser applicationUser = new ApplicationUserBuilder().applicationUserId(102).userId(userId)
+                .username("Test username").build();
 
-        String biking1 = TestUtils.readJson("biking1.json");
+        String biking1 = TestUtils.readJson("biking2.json");
 
         ObjectMapper objectMapper = new ObjectMapper();
         WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
@@ -81,15 +75,31 @@ public class ApplicationUserServiceTest {
 
         ApplicationUser createdApplicationUser = applicationUserService.getById(userId);
 
-        assertEquals(applicationUser.getWorkouts().get(0).getDataInstances().size(),
-                createdApplicationUser.getWorkouts().get(0).getDataInstances().size());
+        assertEquals(1, createdApplicationUser.getWorkouts().size());
     }
 
-    // TODO
-    @Ignore
     @Test
-    public void testDeleteWorkoutsByUserId() {
+    public void testDeleteWorkoutsByUserId() throws JsonProcessingException {
+        logger.info("testDeleteWorkoutsByUserId started");
 
+        String userId = UUID.randomUUID().toString();
+        ApplicationUser applicationUser = new ApplicationUserBuilder().applicationUserId(102).userId(userId)
+                .username("Test username").build();
+
+        String biking1 = TestUtils.readJson("biking2.json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+
+        applicationUser.setWorkouts(Collections.singletonList(workoutConverter.convert(workoutDTO, applicationUser)));
+
+        applicationUserRepository.save(applicationUser);
+
+        applicationUserService.deleteWorkoutsByUserId(applicationUser.getUserId());
+
+        ApplicationUser createdApplicationUser = applicationUserService.getById(userId);
+
+        assertEquals(0, createdApplicationUser.getWorkouts().size());
     }
 
 }

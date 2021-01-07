@@ -1,6 +1,8 @@
 package com.ludisy.ludisygateway.SERVICE_UserManagement.model;
 
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -46,7 +48,8 @@ public class ApplicationUser {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "applicationUser", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "applicationUser", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private List<Workout> workouts = new ArrayList<>();
 
     public ApplicationUser() {

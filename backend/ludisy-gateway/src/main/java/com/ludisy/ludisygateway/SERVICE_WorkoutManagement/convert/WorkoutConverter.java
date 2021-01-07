@@ -13,7 +13,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutType;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.DataInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutTypeRepository;
-import com.ludisy.ludisygateway.shared.CustomException;
+import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,8 +73,8 @@ public class WorkoutConverter {
         try {
             rootNode = mapper.readTree(json.toString());
         } catch (JsonProcessingException e) {
-            System.out.println("Error at parsing json!");
-            throw new CustomException("Error at parsing json!");
+            logger.error("Error at parsing json!");
+            throw new CustomBadRequestException("Error at parsing json!");
         }
         iterateNode(workout, rootNode, workoutDataList, dataInstanceList, -1);
 

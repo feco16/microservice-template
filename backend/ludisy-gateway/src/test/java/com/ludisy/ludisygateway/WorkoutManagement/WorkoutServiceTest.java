@@ -14,6 +14,7 @@ import com.ludisy.ludisygateway.TestUtils;
 import com.ludisy.ludisygateway.builder.WorkoutDTOBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -64,7 +65,7 @@ public class WorkoutServiceTest {
     }
 
     @Test
-    public void testCreateWorkoutWithBikingSnapshots() {
+    public void testCreateWorkoutWithBikingSnapshots() throws JsonProcessingException {
         String workoutId = UUID.randomUUID().toString();
 
         String userId = UUID.randomUUID().toString();
@@ -87,6 +88,7 @@ public class WorkoutServiceTest {
                 get(0)).size());
         assertEquals(5, ((JSONObject) ((JSONArray) createdWorkoutDTO.getData().get("snapShots")).
                 get(1)).size());
+        assertTrue(compareWorkouts(workoutDTO, createdWorkoutDTO));
     }
 
     // TODO resolve cal double - int problem
