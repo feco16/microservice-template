@@ -2,6 +2,9 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,10 +14,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "WORKOUT")
 public class Workout {
 
     @Id
@@ -39,7 +44,8 @@ public class Workout {
     private ApplicationUser applicationUser;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private WorkoutType workoutType;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "workout", fetch = FetchType.LAZY)

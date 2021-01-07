@@ -7,6 +7,8 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUse
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
+import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.TestUtils;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -2,7 +2,7 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.CustomException;
+import com.ludisy.ludisygateway.shared.CustomException;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;

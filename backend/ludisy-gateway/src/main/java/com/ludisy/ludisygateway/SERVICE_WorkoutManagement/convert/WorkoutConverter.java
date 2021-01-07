@@ -1,6 +1,7 @@
 package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
@@ -12,6 +13,7 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.WorkoutType;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.DataInstanceRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutTypeRepository;
+import com.ludisy.ludisygateway.shared.CustomException;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +61,23 @@ public class WorkoutConverter {
     private List<DataInstance> parse(Workout workout, JSONObject json, List<WorkoutData> workoutDataList) {
 
         List<DataInstance> dataInstanceList = new ArrayList<>();
+
+        if (null == json) {
+            return dataInstanceList;
+        }
+
         JsonFactory factory = new JsonFactory();
 
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode;
         try {
             rootNode = mapper.readTree(json.toString());
-            iterateNode(workout, rootNode, workoutDataList, dataInstanceList, -1);
-        } catch (Exception e) {
-            logger.error("An error occurred at workout converter!", e);
+        } catch (JsonProcessingException e) {
+            System.out.println("Error at parsing json!");
+            throw new CustomException("Error at parsing json!");
         }
+        iterateNode(workout, rootNode, workoutDataList, dataInstanceList, -1);
+
         workoutRepository.save(workout);
         dataInstanceRepository.saveAll(dataInstanceList);
 

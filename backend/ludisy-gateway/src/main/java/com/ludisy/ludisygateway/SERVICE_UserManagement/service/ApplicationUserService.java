@@ -9,7 +9,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.CustomException;
+import com.ludisy.ludisygateway.shared.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.ludisy.ludisygateway;
 
-import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.CustomException;
+import com.ludisy.ludisygateway.shared.CustomException;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;

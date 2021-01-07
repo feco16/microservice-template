@@ -1,4 +1,4 @@
-package com.ludisy.ludisygateway.SERVICE_WorkoutManagement;
+package com.ludisy.ludisygateway.shared;
 
 /**
  * Temporary exception class
