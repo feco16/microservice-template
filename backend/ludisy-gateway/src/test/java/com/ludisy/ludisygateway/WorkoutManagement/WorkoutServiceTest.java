@@ -111,7 +111,7 @@ public class WorkoutServiceTest {
 
     }
 
-    // TODO Test realworkouts.json
+    // Performance test
     @Ignore
     @Test
     public void testRealJson() throws JsonProcessingException {

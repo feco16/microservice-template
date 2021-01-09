@@ -39,7 +39,7 @@ public class ApplicationUserServiceTest {
     WorkoutConverter workoutConverter;
 
     @Test
-    public void testApplicationUser() {
+    public void testGetById() {
         logger.error("testApplicationUser started");
 
         String userId = UUID.randomUUID().toString();
@@ -57,7 +57,7 @@ public class ApplicationUserServiceTest {
     }
 
     @Test
-    public void testGetUserWorkouts() throws JsonProcessingException {
+    public void testGetWorkouts() throws JsonProcessingException {
         logger.info("testGetUserWorkouts started");
 
         String userId = UUID.randomUUID().toString();

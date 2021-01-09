@@ -2,12 +2,12 @@ package com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service;
 
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
-import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.dto.WorkoutDTO;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.model.Workout;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.repository.WorkoutRepository;
+import com.ludisy.ludisygateway.shared.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,13 +31,13 @@ public class WorkoutService {
     private ApplicationUserService applicationUserService;
 
     @Transactional
-    public int createWorkout(WorkoutDTO workoutDTO, String userId) {
+    public WorkoutDTO createWorkout(WorkoutDTO workoutDTO, String userId) {
         ApplicationUser applicationUser = applicationUserService.getById(userId);
         if (null == applicationUser) {
-            throw new CustomBadRequestException("The user with id " + userId + " does not exist!");
+            throw new NotFoundException("Application user with id " + userId + " does not exists");
         }
-        Workout workout = workoutConverter.convert(workoutDTO, applicationUser);
-        return 201;
+        workoutConverter.convert(workoutDTO, applicationUser);
+        return workoutDTO;
     }
 
     public List<WorkoutDTO> getWorkoutsByTimestamp(String userId, Long startingDay, Long endingDay) {

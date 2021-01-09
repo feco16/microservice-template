@@ -9,7 +9,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
-import com.ludisy.ludisygateway.shared.CustomBadRequestException;
+import com.ludisy.ludisygateway.shared.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,26 +62,28 @@ public class ApplicationUserService {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    public int createUser(ApplicationUserDTO applicationUserDTO) {
+    public ApplicationUserDTO createUser(ApplicationUserDTO applicationUserDTO) {
         ApplicationUser applicationUser = applicationUserConverter.convert(applicationUserDTO);
         applicationUserRepository.save(applicationUser);
-        return 201;
+        return applicationUserDTO;
     }
 
-    public int modifyUser(ApplicationUserDTO applicationUserDTO) {
+    public void modifyUser(ApplicationUserDTO applicationUserDTO) {
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(applicationUserDTO.getUserId());
         if (null == applicationUser) {
-            throw new CustomBadRequestException("The user with id " + applicationUser.getUserId() + " does not exists");
+            throw new NotFoundException("Application user with id " + applicationUser.getUserId() + " does not exists");
         }
         ApplicationUser modifiedApplicationUser = applicationUserConverter.convert(applicationUserDTO);
         modifiedApplicationUser.setApplicationUserId(applicationUser.getApplicationUserId());
         applicationUserRepository.save(applicationUser);
-        return 201;
     }
 
     public ApplicationUser getById(String userId) {
         logger.info("Get application user with id {}", userId);
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(userId);
+        if (null == applicationUser) {
+            throw new NotFoundException("Application user with id " + userId + " does not exists");
+        }
         return applicationUser;
     }
 

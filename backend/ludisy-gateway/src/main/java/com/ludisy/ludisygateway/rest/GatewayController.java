@@ -7,6 +7,9 @@ import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.service.WorkoutService
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,18 +34,18 @@ public class GatewayController {
 
     // UserManagement
 
-    // TODO test
     @PostMapping("/user")
-    public int postUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
+    public ResponseEntity<ApplicationUserDTO> postUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
         logger.info("Create user with id: {}", applicationUserDTO.getUserId());
-        return applicationUserService.createUser(applicationUserDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON)
+                .body(applicationUserService.createUser(applicationUserDTO));
     }
 
-    // TODO test
     @PutMapping("/user")
-    public int putUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
+    @ResponseStatus(HttpStatus.OK)
+    public void putUser(@RequestBody ApplicationUserDTO applicationUserDTO) {
         logger.info("Modify user with id: {}", applicationUserDTO.getUserId());
-        return applicationUserService.modifyUser(applicationUserDTO);
+        applicationUserService.modifyUser(applicationUserDTO);
     }
 
     @GetMapping("/user/{userId}")
@@ -51,22 +54,24 @@ public class GatewayController {
         return applicationUserService.getDTOById(userId);
     }
 
+    // WorkoutManagement
+
     @DeleteMapping("/user/{userId}/workouts")
-    public int deleteWorkoutsByUserId(@PathVariable(value = "userId") String userId) {
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteWorkoutsByUserId(@PathVariable(value = "userId") String userId) {
         applicationUserService.deleteWorkoutsByUserId(userId);
-        return 201;
     }
 
-    // WorkoutManagement
-    @PostMapping("/workout")
-    public int postWorkout(@RequestBody WorkoutDTO workoutDTO, @RequestParam(value = "userId") String userId) {
+    @PostMapping("/user/{userId}/workout")
+    public ResponseEntity<WorkoutDTO> postWorkout(@RequestBody WorkoutDTO workoutDTO, @PathVariable(value = "userId") String userId) {
         logger.info("Post workout to user with id {}", userId);
         logger.debug("Workout: {}", workoutDTO);
-        return workoutService.createWorkout(workoutDTO, userId);
+        return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON)
+                .body(workoutService.createWorkout(workoutDTO, userId));
     }
 
-    @GetMapping("/workouts")
-    public List<WorkoutDTO> getWorkoutsByTimestamp(@RequestParam(value = "userId") String userId,
+    @GetMapping("/user/{userId}/workouts")
+    public List<WorkoutDTO> getWorkoutsByTimestamp(@PathVariable(value = "userId") String userId,
                                             @RequestParam(value = "startingDay") Long startingDay,
                                             @RequestParam(value = "endingDay") Long endingDay) {
         logger.info("Get workouts by timestamp for user id {} between {} and {}", userId, startingDay, endingDay);

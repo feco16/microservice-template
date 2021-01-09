@@ -34,8 +34,9 @@ public class ApplicationUserConverter implements Converter<ApplicationUserDTO, A
         applicationUser.setPassword(source.getPassword());
 
         List<Workout> workoutList = new ArrayList<>();
-        for (WorkoutDTO workoutDTO : source.getWorkouts()) {
-            workoutList.add(workoutConverter.convert(workoutDTO, applicationUser));
+        if (null != source.getWorkouts()) {
+            source.getWorkouts().stream()
+                    .forEach(workoutDTO -> workoutList.add(workoutConverter.convert(workoutDTO, applicationUser)));
         }
         applicationUser.setWorkouts(workoutList);
 
