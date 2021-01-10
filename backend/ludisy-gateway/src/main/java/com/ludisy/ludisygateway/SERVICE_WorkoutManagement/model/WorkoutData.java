@@ -11,14 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "WORKOUT_DATA")
+@SequenceGenerator(name = "seq_workout_data", sequenceName = "seq_workout_data", allocationSize = 1)
 public class WorkoutData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_workout_data")
     @Column(name = "WORKOUT_DATA_ID")
     private long workoutDataId;
 

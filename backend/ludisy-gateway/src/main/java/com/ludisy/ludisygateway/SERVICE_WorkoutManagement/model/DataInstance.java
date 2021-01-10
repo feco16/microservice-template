@@ -9,14 +9,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "DATA_INSTANCE")
+@SequenceGenerator(name = "seq_data_instance", sequenceName = "seq_data_instance", allocationSize = 1)
 public class DataInstance {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_data_instance")
     @Column(name = "DATA_INSTANCE_ID")
     private long dataInstanceId;
 

@@ -2,6 +2,7 @@ package com.ludisy.ludisygateway.WorkoutManagement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ludisy.ludisygateway.LudisyGatewayApplication;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_WorkoutManagement.convert.WorkoutDTOConverter;
@@ -14,12 +15,12 @@ import com.ludisy.ludisygateway.TestUtils;
 import com.ludisy.ludisygateway.builder.WorkoutDTOBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -30,8 +31,10 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 
+// TODO Cleanup up database before running tests OR create database container
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = LudisyGatewayApplication.class)
+@ActiveProfiles("test")
 public class WorkoutServiceTest {
 
     @Autowired
@@ -64,6 +67,8 @@ public class WorkoutServiceTest {
 
     }
 
+    // Ignoring until database not cleaned up before tests
+    @Ignore
     @Test
     public void testCreateWorkoutWithBikingSnapshots() throws JsonProcessingException {
         String workoutId = UUID.randomUUID().toString();
@@ -100,6 +105,7 @@ public class WorkoutServiceTest {
 
         ObjectMapper objectMapper = new ObjectMapper();
         WorkoutDTO workoutDTO = objectMapper.readValue(biking1, WorkoutDTO.class);
+        workoutDTO.setUuid(UUID.randomUUID().toString());
         workoutService.createWorkout(workoutDTO, userId);
 
         Workout createdWorkout = workoutRepository.findByUuid(workoutDTO.getUuid());

@@ -8,14 +8,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "WORKOUT_TYPE")
+@SequenceGenerator(name = "seq_workout_type", sequenceName = "seq_workout_type", allocationSize = 1)
 public class WorkoutType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_workout_type")
     @Column(name = "TYPE_ID")
     private long typeId;
 

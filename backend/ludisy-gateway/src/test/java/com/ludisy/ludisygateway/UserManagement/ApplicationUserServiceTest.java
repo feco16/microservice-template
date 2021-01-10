@@ -2,6 +2,7 @@ package com.ludisy.ludisygateway.UserManagement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ludisy.ludisygateway.LudisyGatewayApplication;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.service.ApplicationUserService;
@@ -15,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
@@ -24,7 +26,8 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(classes = LudisyGatewayApplication.class)
+@ActiveProfiles("test")
 public class ApplicationUserServiceTest {
 
     Logger logger = LoggerFactory.getLogger(ApplicationUserServiceTest.class);
