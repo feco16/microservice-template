@@ -9,6 +9,7 @@ import com.ludisy.ludisygateway.SERVICE_UserManagement.model.ApplicationUser;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.repository.ApplicationUserRepository;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtTokenUtil;
 import com.ludisy.ludisygateway.SERVICE_UserManagement.security.JwtUserDetailsService;
+import com.ludisy.ludisygateway.shared.CustomBadRequestException;
 import com.ludisy.ludisygateway.shared.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,15 +64,19 @@ public class ApplicationUserService {
     }
 
     public ApplicationUserDTO createUser(ApplicationUserDTO applicationUserDTO) {
-        ApplicationUser applicationUser = applicationUserConverter.convert(applicationUserDTO);
-        applicationUserRepository.save(applicationUser);
+        ApplicationUser applicationUser = applicationUserRepository.findByUserId(applicationUserDTO.getUserId());
+        if (null != applicationUser) {
+            throw new CustomBadRequestException("Application user with id " + applicationUser.getUserId() + " already exists.");
+        }
+        ApplicationUser newApplicationUser = applicationUserConverter.convert(applicationUserDTO);
+        applicationUserRepository.save(newApplicationUser);
         return applicationUserDTO;
     }
 
     public void modifyUser(ApplicationUserDTO applicationUserDTO) {
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(applicationUserDTO.getUserId());
         if (null == applicationUser) {
-            throw new NotFoundException("Application user with id " + applicationUser.getUserId() + " does not exists");
+            throw new NotFoundException("Application user with id " + applicationUserDTO.getUserId() + " does not exists.");
         }
         ApplicationUser modifiedApplicationUser = applicationUserConverter.convert(applicationUserDTO);
         modifiedApplicationUser.setApplicationUserId(applicationUser.getApplicationUserId());
@@ -82,7 +87,7 @@ public class ApplicationUserService {
         logger.info("Get application user with id {}", userId);
         ApplicationUser applicationUser = applicationUserRepository.findByUserId(userId);
         if (null == applicationUser) {
-            throw new NotFoundException("Application user with id " + userId + " does not exists");
+            throw new NotFoundException("Application user with id " + userId + " does not exists.");
         }
         return applicationUser;
     }

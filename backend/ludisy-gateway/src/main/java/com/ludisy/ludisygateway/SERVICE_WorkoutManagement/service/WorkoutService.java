@@ -34,7 +34,7 @@ public class WorkoutService {
     public WorkoutDTO createWorkout(WorkoutDTO workoutDTO, String userId) {
         ApplicationUser applicationUser = applicationUserService.getById(userId);
         if (null == applicationUser) {
-            throw new NotFoundException("Application user with id " + userId + " does not exists");
+            throw new NotFoundException("Application user with id " + userId + " does not exists.");
         }
         workoutConverter.convert(workoutDTO, applicationUser);
         return workoutDTO;
